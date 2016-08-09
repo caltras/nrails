@@ -1,5 +1,5 @@
 const _ = require("lodash");
-var path = process.env.PWD.split("/node_modules");
+var path = (process.env.PWD || process.cwd()).split("/node_modules");
 var fs = require("fs");
 String.prototype.capitalize = function() {
     return this[0].toUpperCase() + this.slice(1);

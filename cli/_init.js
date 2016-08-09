@@ -1,5 +1,5 @@
 var fs = require("fs");
-var path = process.env.PWD.split("/node_modules");
+var path = (process.env.PWD || process.cwd()).split("/node_modules");
 var ncp = require("ncp").ncp;
 
 function createClient(p) {

@@ -1,1 +1,1 @@
-# NRails [![Build Status](https://travis-ci.org/caltras/micro-framework.svg?branch=master)](https://travis-ci.org/caltras/micro-framework)
+# NRails [![Build Status](https://travis-ci.org/caltras/nrails.svg?branch=master)](https://travis-ci.org/caltras/nrails)
