@@ -38,6 +38,7 @@
     "lodash": "^4.5.0",
     "moment": "^2.13.0",
     "moment-timezone": "^0.5.4",
+    "ncp": "^2.0.0",
     "nedb": "^1.8.0",
     "nodemailer": "^2.3.0",
     "passport": "^0.3.2",
