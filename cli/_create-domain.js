@@ -16,7 +16,7 @@ module.exports = function(args) {
         if (!fs.existsSync(path + "/server/domain/" + capitalizeDomain + ".js")) {
 
             var template = `//Auto-generated ${new Date()}
-var Domain = require("micro-framework/api/_domain");
+var Domain = require("nrails/api/_domain");
 function ${capitalizeDomain}(obj,skipFields){
     var self = this;
     Domain.call(this,{fields:obj,clazz:"${capitalizeDomain}",refClazz:self,domain:"${lowerCaseDomain}",skipFields:skipFields});

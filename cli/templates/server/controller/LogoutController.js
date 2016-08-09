@@ -1,4 +1,4 @@
-var config = require("micro-framework/config/config");
+var config = require("nrails/config/config");
 module.exports = {
     "get" : {
         "/" : function(req, res){

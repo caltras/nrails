@@ -1,4 +1,4 @@
-const config = require("micro-framework/config/config");
+const config = require("nrails/config/config");
 
 var LoginController = {
     "get" : {

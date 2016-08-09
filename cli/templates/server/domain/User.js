@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const util = require("util");
-var Domain = require("micro-framework/api/_domain");
+var Domain = require("nrails/api/_domain");
 function User(obj,skipFields){
     var self = this;
     Domain.call(this,{fields:obj,clazz:"User",refClazz:self,domain:"users",skipFields:skipFields});
