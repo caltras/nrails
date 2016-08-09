@@ -1,11 +1,8 @@
 var fs = require("fs");
 const util = require('util');
 var path = (process.env.PWD || process.cwd()).split("/node_modules")[0];
-console.log(path);
 const SEPARATOR = require("path").sep;
-console.log(SEPARATOR);
 var ncp = require("ncp").ncp;
-const spawn = require('child_process').spawn;
 const exec = require('child_process').exec;
 const os = require("os");
 
@@ -110,19 +107,6 @@ var OS_PERMISSION = {
     sunos:""
 };
 function npmInstall(p){
-    /*var exec = spawn(OS_PERMISSION[os.platform()]+"npm", ["install"]);
-    
-    exec.stdout.on('data', (data) => {
-        console.log(`${data}`);
-    });
-
-    exec.stderr.on('data', (data) => {
-        console.log(`${data}`);
-    });
-
-    exec.on('close', (code) => {
-        console.log(`child process exited with code ${code}`);
-    });*/
     console.log("Installing packages...waiting..");
     exec(OS_PERMISSION[os.platform()]+"npm install", (error, stdout, stderr) => {
       if (error) {

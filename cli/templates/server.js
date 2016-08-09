@@ -3,16 +3,16 @@ global.root_directory = path.resolve(__dirname);
 var _ = require("lodash");
 var users = [{
     id: 1,
-    username: "microFramework"
+    username: "nrails"
 }, {
-    username: "microFramework-facebook"
+    username: "nrails-facebook"
 }, {
-    username: "microFramework-google"
+    username: "nrails-google"
 }, ];
 
-var microFramework = require("micro-framework");
+var Application = require("nrails");
 var config = require("./server/config");
-new microFramework()
+new Application()
     .init(
         {
         defaultConfig : config,
