@@ -1,12 +1,14 @@
 var fs = require("fs");
+const util = require('util');
 var path = (process.env.PWD || process.cwd()).split("/node_modules")[0];
+console.log(path);
+const SEPARATOR = require("path").sep;
+console.log(SEPARATOR);
 var ncp = require("ncp").ncp;
 
 function createPackage(p,a) {
-    if (!fs.existsSync(p + "/package.json")) {
-        console.log(path);
-        var project = a[0] || path.substring(path.lastIndexOf("/")+1);
-        var template =
+    var project = a[0] || path.substring(path.lastIndexOf(SEPARATOR)+1);
+    var template =
             `
 {
   "name": "${project}",
@@ -43,7 +45,7 @@ function createPackage(p,a) {
     "moment-timezone": "^0.5.4",
     "nedb": "^1.8.0",
     "nodemailer": "^2.3.0",
-    "nrails": "git://github.com/caltras/nrails.git#master"
+    "nrails": "git://github.com/caltras/nrails.git#master",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0",
     "passport-google": "^0.3.0",
@@ -58,13 +60,14 @@ function createPackage(p,a) {
     "sinon": "^1.17.5"
   }
 }`;
-        fs.writeFileSync(path + "/package.json", template, "UTF-8");
+    if (!fs.existsSync(p + SEPARATOR+"package.json")) {
+        fs.writeFileSync(path + SEPARATOR+"package.json", template, "UTF-8");
     }
 }
 
 function createClient(p) {
-    if (!fs.existsSync(p + "/client")) {
-        ncp(__dirname + "/templates/client", p + "/client", function(err) {
+    if (!fs.existsSync(p + SEPARATOR+"client")) {
+        ncp(__dirname + SEPARATOR+"templates"+SEPARATOR+"client", p + SEPARATOR+"client", function(err) {
             if (err) {
                 throw err;
             }
@@ -73,8 +76,8 @@ function createClient(p) {
 }
 
 function createServerApp(p) {
-    if (!fs.existsSync(p + "/server")) {
-        ncp(__dirname + "/templates/server", p + "/server", function(err) {
+    if (!fs.existsSync(p + SEPARATOR+"server")) {
+        ncp(__dirname + SEPARATOR+"templates"+SEPARATOR+"server", p + SEPARATOR+"server", function(err) {
             if (err) {
                 throw err;
             }
@@ -83,13 +86,13 @@ function createServerApp(p) {
 }
 
 function createTestFolder(p) {
-    fs.existsSync(p + "/test") || fs.mkdirSync(p + "/test");
-    return p + "/test";
+    fs.existsSync(p + SEPARATOR+"test") || fs.mkdirSync(p + SEPARATOR+"test");
+    return p + SEPARATOR+"test";
 }
 
 function createServerFile(p) {
-    if (!fs.existsSync(p + "/server.js")) {
-        ncp(__dirname + "/templates/server.js", p + "/server.js", function(err) {
+    if (!fs.existsSync(p + SEPARATOR+"server.js")) {
+        ncp(__dirname + SEPARATOR+"templates"+SEPARATOR+"server.js", p + SEPARATOR+"server.js", function(err) {
             if (err) {
                 throw err;
             }
