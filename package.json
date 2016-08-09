@@ -1,9 +1,9 @@
 {
-  "name": "micro-framework",
+  "name": "nrails",
   "version": "0.0.1",
-  "description": "Micro framework",
+  "description": "NRails",
   "main": "./index.js",
-  "repository": "https://github.com/caltras/micro-framework",
+  "repository": "https://github.com/caltras/nrails",
   "author": {
     "name": "Claudio Traspadini Oliveira",
     "email": "caltras@gmail.com"
@@ -20,7 +20,8 @@
     "express",
     "elasticsearch",
     "NeDB",
-    "firebase"
+    "firebase",
+    "rails"
   ],
   "dependencies": {
     "body-parser": "^1.15.0",
