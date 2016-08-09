@@ -5,6 +5,9 @@ console.log(path);
 const SEPARATOR = require("path").sep;
 console.log(SEPARATOR);
 var ncp = require("ncp").ncp;
+const spawn = require('child_process').spawn;
+const exec = require('child_process').exec;
+const os = require("os");
 
 function createPackage(p,a) {
     var project = a[0] || path.substring(path.lastIndexOf(SEPARATOR)+1);
@@ -99,6 +102,36 @@ function createServerFile(p) {
         });
     }
 }
+var OS_PERMISSION = {
+    win32 : "",
+    linux: "sudo ",
+    darwin:"",
+    freebsd:"",
+    sunos:""
+};
+function npmInstall(p){
+    /*var exec = spawn(OS_PERMISSION[os.platform()]+"npm", ["install"]);
+    
+    exec.stdout.on('data', (data) => {
+        console.log(`${data}`);
+    });
+
+    exec.stderr.on('data', (data) => {
+        console.log(`${data}`);
+    });
+
+    exec.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+    });*/
+    console.log("Installing packages...waiting..");
+    exec(OS_PERMISSION[os.platform()]+"npm install", (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log("Finished");
+    });
+}
 module.exports = function(args) {
     console.log("Initializing application...");
     createPackage(path,args);
@@ -106,5 +139,6 @@ module.exports = function(args) {
     createServerApp(path);
     createTestFolder(path);
     createServerFile(path);
+    npmInstall(path);
     console.log("Init done...");
 };
