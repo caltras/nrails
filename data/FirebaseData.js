@@ -5,7 +5,7 @@ const miscellaneous = require("../utils/Miscellaneous");
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var tokenGenerator = new FirebaseTokenGenerator(config.database.datasources.default.secret);
 var token = tokenGenerator.createToken(
-  { uid: "youn1ty20160719"},
+  { uid: "nrails20160810"},
   { admin: true }
 );
 
