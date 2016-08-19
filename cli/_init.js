@@ -108,7 +108,11 @@ var OS_PERMISSION = {
 };
 function npmInstall(p){
     console.log("Installing packages...waiting..");
-    exec(OS_PERMISSION[os.platform()]+"npm install", (error, stdout, stderr) => {
+    var extraCommand = "";
+    if(path!=p){
+        extraCommand = "cd "+p+" && ";
+    }
+    exec(OS_PERMISSION[os.platform()]+extraCommand+"npm install", (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         return;
