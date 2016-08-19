@@ -116,8 +116,16 @@ function npmInstall(p){
       console.log("Finished");
     });
 }
+function createFolder(p,args){
+    if(args && args.length){
+        p=p + SEPARATOR+args[0];
+        fs.existsSync(p) || fs.mkdirSync(p);
+    }
+    return p;
+}
 module.exports = function(args) {
     console.log("Initializing application...");
+    path = createFolder(path,args);
     createPackage(path,args);
     createClient(path);
     createServerApp(path);
