@@ -45,7 +45,7 @@ function createPackage(p,a) {
     "moment-timezone": "^0.5.4",
     "nedb": "^1.8.0",
     "nodemailer": "^2.3.0",
-    "nrails": "git://github.com/caltras/nrails.git#master",
+    "nrails": "git+https://git@github.com/caltras/nrails.git#master",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.0",
     "passport-google": "^0.3.0",
