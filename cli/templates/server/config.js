@@ -1,7 +1,7 @@
 var ELASTICSEARCH_URL = process.env.ELASTICSEARCH_URL;
-var HTTP_BASE = process.env.HTTP_BASE || "https://micro-framework-caltras.c9users.io";
+var HTTP_BASE = process.env.HTTP_BASE || "http://localhost:3000";
 var DATA_BASE = process.env.DATA_BASE;
-var PROVIDER_DATA_BASE = process.env.PROVIDER_DATA_BASE;
+var PROVIDER_DATA_BASE = process.env.PROVIDER_DATA_BASE || "NeDBData";
 var FIREBASE_SECRET = process.env.FIREBASE_SECRET;
 var ELASTIC_LOG = process.env.ELASTIC_LOG;
 var GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;

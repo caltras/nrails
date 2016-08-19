@@ -1,7 +1,7 @@
 var ELASTICSEARCH_URL = process.env.ELASTICSEARCH || "127.0.0.1:9200";
 var HTTP_BASE = process.env.HTTP_BASE || "https://localhost:3000";
 var DATA_BASE = process.env.DATA_BASE;
-var PROVIDER_DATA_BASE = process.env.PROVIDER_DATA_BASE || "FirebaseData";
+var PROVIDER_DATA_BASE = process.env.PROVIDER_DATA_BASE || "NeDBData";
 var TOKEN_FIREBASE = process.env.TOKEN_FIREBASE;
 var FIREBASE_SECRET = process.env.FIREBASE_SECRET;
 var ELASTIC_LOG = process.env.ELASTIC_LOG || "trace";
