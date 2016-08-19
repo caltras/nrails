@@ -1,13 +1,13 @@
 var fs = require("fs");
 const util = require('util');
-var path = (process.env.PWD || process.cwd()).split("/node_modules")[0];
+const path = (process.env.PWD || process.cwd()).split("/node_modules")[0];
 const SEPARATOR = require("path").sep;
 var ncp = require("ncp").ncp;
 const exec = require('child_process').exec;
 const os = require("os");
 
 function createPackage(p,a) {
-    var project = a[0] || path.substring(path.lastIndexOf(SEPARATOR)+1);
+    var project = a[0] || p.substring(p.lastIndexOf(SEPARATOR)+1);
     var template =
             `
 {
@@ -61,7 +61,7 @@ function createPackage(p,a) {
   }
 }`;
     if (!fs.existsSync(p + SEPARATOR+"package.json")) {
-        fs.writeFileSync(path + SEPARATOR+"package.json", template, "UTF-8");
+        fs.writeFileSync(p + SEPARATOR+"package.json", template, "UTF-8");
     }
 }
 
@@ -112,7 +112,7 @@ function npmInstall(p){
     if(path!=p){
         extraCommand = "cd "+p+" && ";
     }
-    exec(OS_PERMISSION[os.platform()]+extraCommand+"npm install", (error, stdout, stderr) => {
+    exec(extraCommand+ OS_PERMISSION[os.platform()]+"npm install", (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         return;
@@ -129,12 +129,12 @@ function createFolder(p,args){
 }
 module.exports = function(args) {
     console.log("Initializing application...");
-    path = createFolder(path,args);
-    createPackage(path,args);
-    createClient(path);
-    createServerApp(path);
-    createTestFolder(path);
-    createServerFile(path);
-    npmInstall(path);
+    var newPath = createFolder(path,args);
+    createPackage(newPath,args);
+    createClient(newPath);
+    createServerApp(newPath);
+    createTestFolder(newPath);
+    createServerFile(newPath);
+    npmInstall(newPath);
     console.log("Init done...");
 };
