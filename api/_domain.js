@@ -253,7 +253,6 @@ Domain.initializeCache = function() {
     if(config.database.inMemory){
         global.memDB.createRepository(domain);
     }
-    
     ref.on('child_added', insert);
     ref.on('child_changed', upsert);
     ref.on('child_removed', remove);

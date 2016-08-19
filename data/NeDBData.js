@@ -225,7 +225,12 @@ var Memory = function() {
                 });
         });
     };
-
+    self.on = function(event,callback){
+        //callback.call(this);
+    };
     return self;
+};
+Memory.getTableReference = function(ds,domain){
+    return new Memory().createRepository(domain,ds);
 };
 module.exports = Memory;

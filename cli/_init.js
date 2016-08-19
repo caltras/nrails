@@ -136,5 +136,7 @@ module.exports = function(args) {
     createTestFolder(newPath);
     createServerFile(newPath);
     npmInstall(newPath);
+    console.log("   Please, Configure the application in server/config.js   ");
     console.log("Init done...");
+    
 };
