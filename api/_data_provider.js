@@ -32,6 +32,11 @@ Provider.prototype.save = function(obj) {
     var d = require(Provider.path + this.config.dataProvider);
     return d.save(self.dataSource, self.domain, obj);
 };
+Provider.prototype.updateField = function(id,field) {
+    var self = this;
+    var d = require("../data/" + this.config.dataProvider);
+    return d.set(field,null,self.dataSource,self.domain,id);
+};
 Provider.prototype.delete = function(key,callback,fail) {
     var self = this;
     var d = require(Provider.path + this.config.dataProvider);

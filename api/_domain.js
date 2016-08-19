@@ -167,6 +167,11 @@ Domain.prototype.save = function() {
     response = null;
     return responseJson;
 };
+Domain.prototype.updateField = function(field){
+    var self = this;
+    self._provider.updateField(self.id,field);
+    return self;
+};
 Domain.prototype.delete = function(callback, fail) {
     var self = this;
     return self._provider.delete(self.id, callback, fail);
