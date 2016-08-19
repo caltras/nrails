@@ -51,7 +51,9 @@ var Main = function() {
         for (var i in self.config.database.datasources) {
             if (i) {
                 var ds = self.config.database.datasources[i];
-                DataFactory(ds, ds.type);
+                if(ds && ds.type){
+                    DataFactory(ds, ds.type);
+                }
             }
         }
     };
