@@ -1,7 +1,7 @@
 const config = global.app_config;
 var Firebase = require("firebase");
 const miscellaneous = require("../utils/Miscellaneous");
-
+var _ = require("lodash");
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var tokenGenerator = new FirebaseTokenGenerator(config.database.datasources.default.secret);
 var token = tokenGenerator.createToken(
@@ -58,6 +58,14 @@ FirebaseData.save = function(ds, domain, obj) {
         var ref = FirebaseData.getInstance(ds).child(domain);
         return ref.push(obj);
     }
+};
+FirebaseData.set = function(fields,refBase,ds,domain,key){
+    if(!refBase){
+        refBase = FirebaseData.getInstance(ds).child(domain).child(key);
+    }
+    _.each(fields,function(v,i){
+        refBase.child(i).set(v);
+    });
 };
 FirebaseData.delete = function(ds,domain,key,callback,fail){
     var onComplete = function(error) {

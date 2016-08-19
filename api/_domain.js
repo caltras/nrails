@@ -110,9 +110,13 @@ Domain.prototype.toJson = function() {
                 value = self.fields[field.name];
             }
             arrayReturn[field.name] = value;
+        }else{
+            if(self.fields[field.name] instanceof Array){
+                arrayReturn[field.name] = self.fields[field.name];
+            }
         }
     });
-    arrayReturn.update = self._provider.getTimestamp(); //FirebaseData.getTimestamp();
+    arrayReturn.update = self._provider.getTimestamp();
     return arrayReturn;
 };
 
