@@ -43,6 +43,7 @@ function createPackage(p,a) {
     "lodash": "^4.5.0",
     "moment": "^2.13.0",
     "moment-timezone": "^0.5.4",
+    "mongodb":"^2.2.9",
     "nedb": "^1.8.0",
     "nodemailer": "^2.3.0",
     "nrails": "git+https://git@github.com/caltras/nrails.git#master",
@@ -107,7 +108,7 @@ var OS_PERMISSION = {
     sunos:""
 };
 function npmInstall(p){
-    console.log("Installing packages...waiting..");
+    console.log("Installing packages from npm...waiting..");
     var extraCommand = "";
     if(path!=p){
         extraCommand = "cd "+p+" && ";
