@@ -53,6 +53,10 @@ Provider.prototype.getTableReference = function() {
     var d = Provider.require();
     return d.getTableReference(self.dataSource, self.domain);
 };
+Provider.delete = function(ds,domain,id){
+    var d = Provider.require();
+    return d.delete(ds, domain, id);
+};
 Provider.findById = function(ds, domain, id, callback, fail,nocache) {
     if (Provider.hasCache(nocache)) {
         return Cache.findById("domains", domain, id, callback, fail);

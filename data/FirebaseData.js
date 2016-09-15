@@ -51,13 +51,15 @@ FirebaseData.getTableReference = function(ds, domain) {
     return FirebaseData.getInstance(ds).child(domain);
 };
 FirebaseData.save = function(ds, domain, obj) {
-    if(obj.id){
-        var refBase = FirebaseData.getInstance(ds).child(domain).child(obj.id);
-        return refBase.update(obj);
-    }else{
-        var ref = FirebaseData.getInstance(ds).child(domain);
-        return ref.push(obj);
-    }
+    return new Promise(function(resolve,reject){
+        if(obj.id){
+            var refBase = FirebaseData.getInstance(ds).child(domain).child(obj.id);
+            reject(refBase.update(obj));
+        }else{
+            var ref = FirebaseData.getInstance(ds).child(domain);
+            resolve(ref.push(obj));
+        }    
+    });
 };
 FirebaseData.set = function(fields,refBase,ds,domain,key){
     if(!refBase){
@@ -67,15 +69,17 @@ FirebaseData.set = function(fields,refBase,ds,domain,key){
         refBase.child(i).set(v);
     });
 };
-FirebaseData.delete = function(ds,domain,key,callback,fail){
-    var onComplete = function(error) {
-      if (error) {
-        fail.call();
-      } else {
-        callback.call();
-      }
-    };
-    new Firebase(FirebaseData.getConfig().url + "/" + domain + "/" + key).remove(onComplete);
+FirebaseData.delete = function(ds,domain,key){
+    return new Promise(function(resolve,reject){
+        var onComplete = function(error) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(true);
+          }
+        };
+        new Firebase(FirebaseData.getConfig().url + "/" + domain + "/" + key).remove(onComplete);        
+    });
 };
 
 FirebaseData.find = function(ds, domain, criterias, callback, fail) {

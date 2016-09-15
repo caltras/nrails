@@ -1,6 +1,12 @@
+var bson = require('bson');
+var BSON = new bson.BSONPure.BSON();
 const config = global.app_config;
-var MongoClient = require("mongodb").MongoClient;
+var mongoDb = require("mongodb");
+var MongoClient = mongoDb.MongoClient;
+var ObjectID = mongoDb.ObjectID;
+
 const miscellaneous = require("../utils/Miscellaneous");
+const _ = require("lodash");
 
 function MongoDBData(config) {
     var self = this;
@@ -9,8 +15,20 @@ function MongoDBData(config) {
 }
 
 MongoDBData.datasources = {};
-MongoDBData.createConnection = function() {
-    return null;
+MongoDBData.limit = 10;
+MongoDBData.createConnection = function(ds) {
+    ds = ds || "default";
+    return new Promise(function(resolve, reject) {
+        MongoClient.connect(MongoDBData.config.url, function(err, db) {
+            if (err) {
+                db.close();
+                reject(err);
+            }
+            else {
+                resolve(db);
+            }
+        });
+    });
 };
 MongoDBData.getConfig = function() {
     var cfg = MongoDBData.config;
@@ -21,37 +39,122 @@ MongoDBData.getConfig = function() {
     return cfg;
 };
 MongoDBData.getInstance = function(ds) {
-    var dtSource = null;
+    /*var dtSource = null;
     if (!MongoDBData.datasources.hasOwnProperty(ds)) {
-        MongoDBData.datasources[ds] = MongoDBData.createConnection();
+        MongoDBData.datasources[ds] = MongoDBData.createConnection(ds);
     }
     dtSource = MongoDBData.datasources[ds];
-    return dtSource;
+    return dtSource;*/
+    return MongoDBData.createConnection(ds);
 };
 MongoDBData.getTimestamp = function() {
-    return null;
+    return new Date().getTime();
 };
 MongoDBData.getTableReference = function(ds, domain) {
-    return null;
+    return {
+        on:function(event){
+        
+        }
+    };
 };
 MongoDBData.save = function(ds, domain, obj) {
-    return null;
+    return new Promise(function(resolve, reject) {
+        MongoDBData.getInstance(ds).then(function(db) {
+            var collection = db.collection(domain);
+            collection.insertOne(obj, function(err, result) {
+                db.close();
+                if (err) {
+                    reject(err);
+                }else {
+                    obj.id  = ObjectID(result.insertedId.id).toString();
+                    resolve(miscellaneous.formatResponseMongoDbOne(obj));
+                }
+            });
+        }).catch(function(err) {
+            reject(err);
+        });
+    });
 };
-MongoDBData.delete = function(ds,domain,key,callback,fail){
-    return null;
+MongoDBData.delete = function(ds, domain, key) {
+    return new Promise(function(resolve, reject) {
+        MongoDBData.getInstance(ds).then(function(db) {
+            var collection = db.collection(domain);
+            collection.deleteOne({"_id": new ObjectID(key) }, function(err, result) {
+                db.close();
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(result.deletedCount);
+                }
+            });
+        }).catch(function(err) {
+            reject(err);
+        });
+    });
 };
 
-MongoDBData.find = function(ds, domain, criterias, callback, fail) {
-    return null;    
+MongoDBData.find = function(ds, domain, criterias,options) {
+    var opts = options || {};
+    return new Promise(function(resolve, reject) {
+        MongoDBData.getInstance(ds).then(function(db) {
+            db.collection(domain)
+                .find(criterias)
+                .count().then(function(data){
+                    var cursor = db.collection(domain)
+                        .find(criterias)
+                        .limit(opts.limit || MongoDBData.limit);
+                    
+                    if(opts.sort){
+                        cursor.sort(opts.sort);
+                    }
+                        
+                    cursor.toArray(function(err, docs) {
+                        db.close();
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        resolve(miscellaneous.formatResponseMongoDbList(docs,data));
+                    });
+                });
+        }).catch(function(err) {
+            reject(err);
+        });
+    });
 };
 
-MongoDBData.findById = function(ds, domain, id, callback, fail) {
-    return null;
-
+MongoDBData.findById = function(ds, domain, id) {
+    return new Promise(function(resolve, reject) {
+        MongoDBData.getInstance(ds).then(function(db) {
+            db.collection(domain)
+                .find({"_id": new ObjectID(id)})
+                .toArray(function(err, docs) {
+                    db.close();
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(miscellaneous.formatResponseMongoDbOne(_.find(docs)));
+                });
+        }).catch(function(err) {
+            reject(err);
+        });
+    });
 };
 
-MongoDBData.count = function(ds,domain,criteria,callback,fail){
-    return null;
+MongoDBData.count = function(ds, domain, criteria) {
+    return new Promise(function(resolve, reject) {
+        MongoDBData.getInstance(ds).then(function(db) {
+            var count = db.collection(domain)
+                .find(criteria)
+                .count();
+            db.close();
+            resolve(count);
+        }).catch(function(err) {
+            reject(err);
+        });
+    });
 };
 
 module.exports = MongoDBData;

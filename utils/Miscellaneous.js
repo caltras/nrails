@@ -179,7 +179,7 @@ var miscellaneous = {
             },
             first: function(Vo){
                 var list =data.list(Vo);
-                if(list.length){
+                if(list && list.length){
                     return list[0];
                 }else{
                     return null;
@@ -216,19 +216,82 @@ var miscellaneous = {
         };
         return data;
     },
-    formatHttpResponse: function(obj,total,maxResults,offset,error,errorMessage){
-        if(obj instanceof Array){
-            return {
-                list : obj,
-                total : total,
-                maxResults : maxResults || 0,
-                offset : offset || 0,
-                error:error,
-                errorMessage:errorMessage
-            };
-        }else{
-            return obj;
-        }
+    formatResponseMongoDbOne : function(docs){
+        var data = {
+            list : function(Vo){
+                if(docs){
+                    if(Vo){
+                        return [new Vo(docs)];
+                    }else{
+                        return [docs];
+                    }
+                }else{
+                    return null;
+                }
+            },
+            size: function() {
+                return (!!_.find(docs)) ? 1 : 0;
+            },
+            total: function(){
+                return (!!_.find(docs)) ? 1 : 0;
+            },
+            first: function(Vo){
+                var list =data.list(Vo);
+                if(list && list.length){
+                    var domain = list[0];
+                    domain.id = domain._id.toString();
+                    return domain;
+                }else{
+                    return null;
+                }
+            }
+        };
+        return data;
+    },
+    formatResponseMongoDbList : function(docs,cont){
+        var data = {
+            list : function(Vo){
+                var list = [];
+                _.each(docs,function(d){
+                    d.id = d._id;
+                    if(Vo){
+                        d = new Vo(d);
+                    }
+                    list.push(d);
+                });
+                return list;
+            },
+            size: function(){
+                return docs && docs.length;
+            },
+            total : function() {
+                return cont;
+            },
+            first: function(Vo){
+                var list =data.list(Vo);
+                if(list.length){
+                    return list[0];
+                }else{
+                    return null;
+                }
+            }
+        };
+        return data;
+    },
+    /*standard : http://jsonapi.org/ */
+    formatHttpResponse: function(obj,maxResults,offset,errors,converter){
+        
+        return {
+            meta : {
+                size: obj ? obj.size() : 0,
+                total: obj ? obj.total() : 0,
+                maxResults:maxResults || 0,
+                offset: offset || 0,
+            },
+            data : (obj ? (obj.size() > 1 ? obj.list(converter) : obj.first(converter)): null),
+            errors: errors
+        };
+        
     },
     isNumber : function(value){
         return value && (typeof(value) === "number" || !!value.toString().match(/[0-9]+/));

@@ -44,6 +44,7 @@ function createPackage(p,a) {
     "moment": "^2.13.0",
     "moment-timezone": "^0.5.4",
     "mongodb":"^2.2.9",
+    "bson":"^0.5.4",
     "nedb": "^1.8.0",
     "nodemailer": "^2.3.0",
     "nrails": "git+https://git@github.com/caltras/nrails.git#master",

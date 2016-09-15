@@ -30,7 +30,7 @@ function Domain(options) {
     self._constructor();
     return self;
 }
-Domain.path = "../domain/";
+Domain.path = "../../../server/domain/";
 Domain.prototype.skipFields = function(fields) {
     var self = this;
     self._skipFields = fields || [];
@@ -53,7 +53,7 @@ Domain.prototype._constructor = function() {
 Domain.prototype._convertoToType = function(field, value) {
     if (field.hasOwnProperty("type")) {
         if (field.type === "password") {
-            value = miscellaneous.toMD5(value);
+            value = miscellaneous.toMD5(value.toString());
         }
         if (field.type === "timestamp") {
             value = miscellaneous.toTimestamp(value);
@@ -143,29 +143,34 @@ Domain.prototype.set = function(_fields) {
 };
 Domain.prototype.save = function() {
     var self = this;
-    var d = null;
-    var obj = self.fields;
-    var strClazz = self._clazz;
-    try {
-        var clazz = require(Domain.path + strClazz);
-        d = new clazz(obj, self._skipFields);
-    }
-    catch (e) {
-        d = obj;
-    }
-    var responseJson = null;
-    var response = null;
-    responseJson = d.toJson();
-    if (d.validate()) {
-        response = self._provider.save(responseJson);
-        responseJson.id = responseJson.id ? responseJson.id : response.key();
-    }
-    else {
-        responseJson.errors = d.errors;
-    }
-    d = null;
-    response = null;
-    return responseJson;
+    return new Promise(function(resolve,reject){
+        var d = null;
+        var obj = self.fields;
+        var strClazz = self._clazz;
+        try {
+            var clazz = require(Domain.path + strClazz);
+            d = new clazz(obj, self._skipFields);
+        }
+        catch (e) {
+            d = obj;
+            reject({error:e.message});
+            return;
+        }
+        var responseJson = null;
+        responseJson = d.toJson();
+        if (d.validate()) {
+            self._provider.save(responseJson).then(function(data){
+                responseJson.id = responseJson.id ? responseJson.id : data.key();
+                resolve(data);
+            }).catch(function(err){
+                reject(err);
+            });
+            
+        }else {
+            responseJson.errors = d.errors;
+            reject(responseJson);
+        }
+    });
 };
 Domain.prototype.updateField = function(field){
     var self = this;
@@ -175,6 +180,11 @@ Domain.prototype.updateField = function(field){
 Domain.prototype.delete = function(callback, fail) {
     var self = this;
     return self._provider.delete(self.id, callback, fail);
+};
+Domain.delete = function(id){
+    var self = this;
+    var domain = self.domain;
+    return Provider.delete("default",domain,id);
 };
 Domain.findById = function(id, callback, fail, nocache) {
     var self = this;

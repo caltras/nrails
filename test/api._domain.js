@@ -431,7 +431,7 @@ describe("unit test Domain", function() {
             });
             assert(!obj.save().errors);
         }); 
-        it("error",function(){
+        it("error",function(done){
             var Test = require("./domain/Test");
 
             var obj = new Test({
@@ -441,7 +441,11 @@ describe("unit test Domain", function() {
                 pass: "12345",
                 date: new Date().getTime()
             });
-            assert(obj.save().errors);
+            obj.save().then(function(){
+                expect.fail();
+            }).catch(function(error){
+                done();
+            });
         });
     });
     describe("delete",function(){
