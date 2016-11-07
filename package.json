@@ -21,6 +21,7 @@
     "elasticsearch",
     "NeDB",
     "firebase",
+    "mongodb",
     "rails"
   ],
   "dependencies": {

@@ -39,12 +39,6 @@ MongoDBData.getConfig = function() {
     return cfg;
 };
 MongoDBData.getInstance = function(ds) {
-    /*var dtSource = null;
-    if (!MongoDBData.datasources.hasOwnProperty(ds)) {
-        MongoDBData.datasources[ds] = MongoDBData.createConnection(ds);
-    }
-    dtSource = MongoDBData.datasources[ds];
-    return dtSource;*/
     return MongoDBData.createConnection(ds);
 };
 MongoDBData.getTimestamp = function() {
