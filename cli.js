@@ -24,10 +24,12 @@ if(command){
         case "cd":
             require("./cli/_create-domain")(parameters,config);
             break;
+        case "controller":
         case "create-controller":
         case "cc":
             require("./cli/_create-controller")(parameters,config);
             break;
+        case "service":
         case "create-service":
         case "cs":
             require("./cli/_create-service")(parameters,config);
