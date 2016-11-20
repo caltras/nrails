@@ -4,7 +4,7 @@ Nrails is a micro framework based rails concept.
 In the moment, Nrails is available only in the github.  
 It will be available in npmjs soon.
 
-`npm install -g https://github.com/caltras/nrails#master*`
+`npm install -g https://github.com/caltras/nrails#master`
 
 
 ## Run 
