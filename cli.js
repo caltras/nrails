@@ -19,6 +19,7 @@ if(command){
         case "i":
             require("./cli/_init")(parameters,config);
             break;
+        case "model":
         case "create-domain":
         case "cd":
             require("./cli/_create-domain")(parameters,config);
@@ -34,6 +35,10 @@ if(command){
         case "run":
         case "r":
             require("./cli/_run")(parameters,config);
+            break;
+        case "test":
+        case "t":
+            require("./cli/_run-test")(parameters,config);
             break;
         default:
             console.log("Not found command!");

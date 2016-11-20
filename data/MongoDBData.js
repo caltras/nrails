@@ -46,8 +46,8 @@ MongoDBData.getTimestamp = function() {
 };
 MongoDBData.getTableReference = function(ds, domain) {
     return {
-        on:function(event){
-        
+        on:function(event,callback){
+            
         }
     };
 };
